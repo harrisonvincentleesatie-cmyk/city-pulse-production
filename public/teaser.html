@@ -48,8 +48,8 @@
       height: 680px;
       background: radial-gradient(
         ellipse at center,
-        rgba(212, 37, 90, 0.09) 0%,
-        rgba(180, 28, 72, 0.05) 36%,
+        rgba(212, 37, 90, 0.12) 0%,
+        rgba(180, 28, 72, 0.06) 36%,
         transparent 66%
       );
       animation: breathe 8s ease-in-out infinite;
@@ -118,7 +118,7 @@
       max-width: 400px;
       display: flex;
       flex-direction: column;
-      gap: 32px;
+      gap: 36px;
     }
 
     /* ── Brand ── */
@@ -155,7 +155,7 @@
     .hero {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
 
     .eyebrow {
@@ -250,6 +250,13 @@
       }
     }
 
+    .spots-note {
+      font-size: 12px;
+      color: rgba(212, 37, 90, 0.65);
+      letter-spacing: 0.02em;
+      text-align: center;
+    }
+
     .form-note {
       font-size: 11px;
       color: rgba(232, 228, 220, 0.25);
@@ -298,9 +305,16 @@
       text-align: center;
     }
 
+    .fomo {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(232, 228, 220, 0.6);
+      letter-spacing: 0.01em;
+    }
+
     /* ── Desktop comfort ── */
     @media (min-width: 640px) {
-      .inner { gap: 40px; }
+      .inner { gap: 44px; }
       h1 { font-size: 36px; }
       .sub { font-size: 16px; }
     }
@@ -327,7 +341,8 @@
       <!-- Hero -->
       <div class="hero">
         <p class="eyebrow">Launching soon in Saigon</p>
-        <h1>Know where the city is alive before you go.</h1>
+        <h1>Never walk into a dead night again.</h1>
+        <p class="fomo">🔥 Early access opening soon in Saigon</p>
         <p class="sub">City Pulse shows where bars, clubbing, food, coffee, and live city energy are building in real time.</p>
       </div>
 
@@ -343,8 +358,9 @@
             inputmode="email"
             required
           />
-          <button type="submit">Get notified at launch</button>
+          <button type="submit">Get early access</button>
         </form>
+        <p class="spots-note">Limited spots for Saigon launch</p>
         <div class="confirmation" id="confirmation" role="status" aria-live="polite">
           <span class="confirmation-check">✓</span>
           <span class="confirmation-title">You're on the list.</span>
