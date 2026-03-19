@@ -182,6 +182,7 @@
       display: flex;
       flex-direction: column;
       gap: 7px;
+      transition: opacity 0.3s ease, box-shadow 0.4s ease, border-color 0.4s ease, background 0.4s ease;
     }
 
     .card.energy-high {
@@ -193,6 +194,10 @@
       border-color: rgba(212, 37, 90, 0.35);
       background: rgba(212, 37, 90, 0.06);
       box-shadow: 0 0 20px rgba(212, 37, 90, 0.05) inset;
+    }
+
+    .card-flash {
+      box-shadow: 0 0 22px rgba(212, 37, 90, 0.18) !important;
     }
 
     .card-top {
@@ -229,6 +234,12 @@
       background: rgba(212, 37, 90, 0.22);
       color: #e8486e;
       border: 1px solid rgba(212, 37, 90, 0.4);
+    }
+
+    .energy-badge.moderate {
+      background: rgba(180, 120, 40, 0.12);
+      color: rgba(220, 170, 80, 0.75);
+      border: 1px solid rgba(180, 120, 40, 0.2);
     }
 
     .energy-badge.low {
@@ -342,6 +353,14 @@
       text-align: center;
     }
 
+    .cta-nudge {
+      font-size: 13px;
+      color: rgba(232, 228, 220, 0.42);
+      letter-spacing: 0.01em;
+      text-align: center;
+      font-style: italic;
+    }
+
     /* ── Confirmation ── */
     .confirmation {
       display: none;
@@ -414,7 +433,7 @@
         <div class="live-header">
           <div class="live-indicator">
             <div class="live-dot"></div>
-            <span class="live-label">Live Venues — Saigon Right Now</span>
+            <span class="live-label">Live Now — Saigon</span>
           </div>
         </div>
 
@@ -445,6 +464,7 @@
 
       <!-- Waitlist form -->
       <div class="form-block">
+        <p class="cta-nudge">People are choosing where to go right now.</p>
         <form id="waitlist-form" action="https://formspree.io/f/mkoqkdag" method="POST" novalidate>
           <input
             type="email"
@@ -455,7 +475,7 @@
             inputmode="email"
             required
           />
-          <button type="submit">Get early access</button>
+          <button type="submit">Unlock the city</button>
         </form>
         <p class="spots-note">Limited spots for Saigon launch</p>
         <div class="confirmation" id="confirmation" role="status" aria-live="polite">
@@ -474,6 +494,7 @@
   </div>
 
   <script>
+    // ── Form submission (Formspree — unchanged) ──────────────────────────────
     const form = document.getElementById('waitlist-form');
     const confirmation = document.getElementById('confirmation');
 
@@ -495,6 +516,75 @@
       form.style.display = 'none';
       confirmation.classList.add('visible');
     });
+
+    // ── Live card rotation ───────────────────────────────────────────────────
+    const venuePool = [
+      { name: 'Lush Saigon',       energy: 'veryhigh', label: 'Very High', desc: 'Queue building — go now' },
+      { name: 'Envy Club',          energy: 'veryhigh', label: 'Very High', desc: 'Dance floor packed' },
+      { name: 'Apocalypse Now',     energy: 'veryhigh', label: 'Very High', desc: "Peak hour — don't wait" },
+      { name: 'Broma Not A Bar',    energy: 'high',     label: 'High',      desc: 'Rooftop filling fast' },
+      { name: 'Chill Skybar',       energy: 'high',     label: 'High',      desc: 'Views + crowd building' },
+      { name: 'Pasteur Street',     energy: 'high',     label: 'High',      desc: 'Craft beer crowd growing' },
+      { name: 'Cargo Bar',          energy: 'moderate', label: 'Moderate',  desc: 'Steady vibe — worth it' },
+      { name: 'The Gin House',      energy: 'low',      label: 'Low',       desc: 'Slow night — pass' },
+      { name: 'The Observatory',    energy: 'low',      label: 'Low',       desc: 'Quiet tonight — skip' },
+    ];
+
+    // Simulated clock starting around 11:30 PM
+    let clockMinutes = 23 * 60 + 30;
+    function nextTime() {
+      clockMinutes += Math.floor(Math.random() * 4) + 1;
+      const h = Math.floor(clockMinutes / 60) % 24;
+      const m = clockMinutes % 60;
+      const displayH = h > 12 ? h - 12 : h === 0 ? 12 : h;
+      return `${displayH}:${String(m).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
+    }
+
+    const cards = Array.from(document.querySelectorAll('.live-section .card'));
+    let slotIndex = 0;
+
+    // Track what each slot is showing so we don't repeat
+    const slotVenues = cards.map((_, i) => i);
+
+    function updateNextCard() {
+      const card = cards[slotIndex];
+      slotIndex = (slotIndex + 1) % cards.length;
+
+      // Pick a venue not currently shown in this slot
+      let pick;
+      do { pick = venuePool[Math.floor(Math.random() * venuePool.length)]; }
+      while (pick.name === card.querySelector('.card-location').textContent.split(' — ')[0].replace('📍 ', ''));
+
+      // Fade out
+      card.style.opacity = '0';
+
+      setTimeout(() => {
+        // Update content
+        card.querySelector('.card-location').textContent = `📍 ${pick.name} — ${nextTime()}`;
+
+        const badge = card.querySelector('.energy-badge');
+        badge.className = `energy-badge ${pick.energy}`;
+        badge.textContent = pick.label;
+
+        card.querySelector('.card-desc').textContent = pick.desc;
+
+        // Update card energy class
+        card.className = 'card' + (pick.energy !== 'low' ? ` energy-${pick.energy}` : '');
+
+        // Fade in
+        card.style.opacity = '1';
+
+        // Brief flash glow
+        card.classList.add('card-flash');
+        setTimeout(() => card.classList.remove('card-flash'), 700);
+      }, 300);
+    }
+
+    // Stagger initial updates so cards don't all blink at once
+    setTimeout(() => {
+      updateNextCard();
+      setInterval(updateNextCard, 2800);
+    }, 2000);
   </script>
 
   <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
