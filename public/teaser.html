@@ -353,6 +353,13 @@
       text-align: center;
     }
 
+    .live-footnote {
+      font-size: 11px;
+      color: rgba(232, 228, 220, 0.2);
+      letter-spacing: 0.03em;
+      text-align: right;
+    }
+
     .cta-nudge {
       font-size: 13px;
       color: rgba(232, 228, 220, 0.42);
@@ -422,7 +429,7 @@
 
       <!-- Hero -->
       <div class="hero">
-        <p class="eyebrow">Launching soon in Saigon</p>
+        <p class="eyebrow">Early Access — Saigon</p>
         <h1>Never walk into a <span class="hl">dead night</span> again.</h1>
         <p class="fomo">🔥 Early access opening soon in Saigon</p>
         <p class="sub">City Pulse shows where bars, clubbing, food, coffee, and live city energy are building in real time.</p>
@@ -433,7 +440,7 @@
         <div class="live-header">
           <div class="live-indicator">
             <div class="live-dot"></div>
-            <span class="live-label">Live Now — Saigon</span>
+            <span class="live-label">● Live Data (Preview)</span>
           </div>
         </div>
 
@@ -460,11 +467,12 @@
           </div>
           <span class="card-desc">Quiet tonight — skip</span>
         </div>
+        <p class="live-footnote">Data updates in real-time once live.</p>
       </div>
 
       <!-- Waitlist form -->
       <div class="form-block">
-        <p class="cta-nudge">People are choosing where to go right now.</p>
+        <p class="cta-nudge">Be first to see where the city is actually alive.</p>
         <form id="waitlist-form" action="https://formspree.io/f/mkoqkdag" method="POST" novalidate>
           <input
             type="email"
@@ -475,7 +483,7 @@
             inputmode="email"
             required
           />
-          <button type="submit">Unlock the city</button>
+          <button type="submit">Request access</button>
         </form>
         <p class="spots-note">Limited spots for Saigon launch</p>
         <div class="confirmation" id="confirmation" role="status" aria-live="polite">
