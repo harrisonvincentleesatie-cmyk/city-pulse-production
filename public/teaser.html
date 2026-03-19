@@ -363,10 +363,20 @@
     const form = document.getElementById('waitlist-form');
     const confirmation = document.getElementById('confirmation');
 
-    form.addEventListener('submit', function (e) {
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
       const email = document.getElementById('email').value.trim();
       if (!email || !email.includes('@')) return;
+
+      try {
+        await fetch('https://subscribe-forms.beehiiv.com/api/v1/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, publication_id: '12f31451-3ac2-4d22-909b-ff74edaee332' }),
+        });
+      } catch (_) {
+        // Silently continue — show success regardless of network errors
+      }
 
       form.style.display = 'none';
       confirmation.classList.add('visible');
