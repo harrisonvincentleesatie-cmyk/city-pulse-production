@@ -333,7 +333,7 @@
 
       <!-- Waitlist form -->
       <div class="form-block">
-        <form id="waitlist-form" action="#" method="POST" novalidate>
+        <form id="waitlist-form" action="https://formspree.io/f/mkoqkdag" method="POST" novalidate>
           <input
             type="email"
             id="email"
@@ -359,38 +359,24 @@
     </div>
   </div>
 
-  <iframe
-    id="beehiiv-target"
-    name="beehiiv-target"
-    src="https://subscribe-forms.beehiiv.com/12f31451-3ac2-4d22-909b-ff74edaee332"
-    style="display:none"
-    aria-hidden="true"
-  ></iframe>
-
   <script>
     const form = document.getElementById('waitlist-form');
     const confirmation = document.getElementById('confirmation');
 
-    form.addEventListener('submit', function (e) {
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
       const email = document.getElementById('email').value.trim();
       if (!email || !email.includes('@')) return;
 
-      const hidden = document.createElement('form');
-      hidden.action = 'https://subscribe-forms.beehiiv.com/12f31451-3ac2-4d22-909b-ff74edaee332';
-      hidden.method = 'POST';
-      hidden.target = 'beehiiv-target';
-      hidden.style.display = 'none';
-
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = 'email';
-      input.value = email;
-      hidden.appendChild(input);
-
-      document.body.appendChild(hidden);
-      hidden.submit();
-      document.body.removeChild(hidden);
+      try {
+        await fetch('https://formspree.io/f/mkoqkdag', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+      } catch (_) {
+        // Silently continue
+      }
 
       form.style.display = 'none';
       confirmation.classList.add('visible');
