@@ -173,7 +173,7 @@
       display: flex;
       flex-direction: column;
       gap: 7px;
-      transition: opacity 0.3s ease, box-shadow 0.4s ease, border-color 0.4s ease, background 0.4s ease;
+      transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.4s ease, border-color 0.4s ease, background 0.4s ease;
     }
 
     .card.energy-high {
@@ -526,48 +526,107 @@
 
     // ── Live card rotation ───────────────────────────────────────────────────
     const venuePool = [
-      { name: 'Lush Saigon',       energy: 'veryhigh', label: '🔥 Packed',   desc: 'Queue building — go now' },
-      { name: 'Envy Club',          energy: 'veryhigh', label: '🔥 Packed',   desc: 'Dance floor packed' },
-      { name: 'Apocalypse Now',     energy: 'veryhigh', label: '🔥 Packed',   desc: "Peak hour — don't wait" },
-      { name: 'Broma Not A Bar',    energy: 'high',     label: '⚡ Busy',     desc: 'Rooftop filling fast' },
-      { name: 'Chill Skybar',       energy: 'high',     label: '⚡ Busy',     desc: 'Views + crowd building' },
-      { name: 'Pasteur Street',     energy: 'high',     label: '⚡ Busy',     desc: 'Craft beer crowd growing' },
-      { name: 'Cargo Bar',          energy: 'moderate', label: '👌 Good',     desc: 'Steady vibe — worth it' },
-      { name: 'The Gin House',      energy: 'low',      label: '⬇️ Quiet',   desc: 'Slow night — pass' },
-      { name: 'The Observatory',    energy: 'low',      label: '⬇️ Quiet',   desc: 'Quiet tonight — skip' },
+      {
+        name: 'Bam',
+        entries: [
+          { energy: 'veryhigh', label: '🔥 Packed',  desc: 'Dance floor packed' },
+          { energy: 'high',     label: '⚡ Busy',    desc: 'Drinks flowing — getting busy' },
+        ]
+      },
+      {
+        name: 'Lost - Drink & Chill',
+        entries: [
+          { energy: 'high',     label: '⚡ Busy',    desc: 'Picking up fast' },
+          { energy: 'moderate', label: '👌 Good',    desc: 'Steady crowd — chill vibe' },
+        ]
+      },
+      {
+        name: 'Loop 1 - Cocktail & Kitchen',
+        entries: [
+          { energy: 'high',     label: '⚡ Busy',    desc: 'Tables filling up' },
+          { energy: 'moderate', label: '👌 Good',    desc: 'Solid crowd tonight' },
+        ]
+      },
+      {
+        name: 'Bodega Saigon',
+        entries: [
+          { energy: 'veryhigh', label: '🔥 Packed',  desc: "Queue building — go now" },
+          { energy: 'high',     label: '⚡ Busy',    desc: 'Picking up fast' },
+        ]
+      },
+      {
+        name: 'Lush Saigon',
+        entries: [
+          { energy: 'veryhigh', label: '🔥 Packed',  desc: "Peak hour — don't wait" },
+          { energy: 'high',     label: '⚡ Busy',    desc: 'Dance floor warming up' },
+        ]
+      },
+      {
+        name: 'Broma Not A Bar',
+        entries: [
+          { energy: 'high',     label: '⚡ Busy',    desc: 'Rooftop filling fast' },
+          { energy: 'moderate', label: '👌 Good',    desc: 'Good energy on the rooftop' },
+        ]
+      },
+      {
+        name: 'The Observatory',
+        entries: [
+          { energy: 'low',      label: '⬇️ Quiet',  desc: 'Quiet tonight — skip' },
+          { energy: 'moderate', label: '👌 Good',    desc: 'Slow start, picking up' },
+        ]
+      },
     ];
 
-    // Simulated clock starting around 11:30 PM
-    let clockMinutes = 23 * 60 + 30;
-    function nextTime() {
-      clockMinutes += Math.floor(Math.random() * 4) + 1;
-      const h = Math.floor(clockMinutes / 60) % 24;
-      const m = clockMinutes % 60;
-      const displayH = h > 12 ? h - 12 : h === 0 ? 12 : h;
-      return `${displayH}:${String(m).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
+    // Simulated clock — starts in the 11:30 PM range, advances per update
+    const cardTimes = {};
+    function seedTime() {
+      return 23 * 60 + 28 + Math.floor(Math.random() * 12);
     }
 
     const cards = Array.from(document.querySelectorAll('.live-section .card'));
+
+    // Initialise per-card clocks
+    cards.forEach((c, i) => { cardTimes[i] = seedTime() + i * 5; });
+
+    function tickTime(cardIndex) {
+      cardTimes[cardIndex] += Math.floor(Math.random() * 4) + 1;
+      const total = cardTimes[cardIndex];
+      const h = Math.floor(total / 60) % 24;
+      const m = total % 60;
+      const displayH = h > 12 ? h - 12 : (h === 0 ? 12 : h);
+      return `${displayH}:${String(m).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
+    }
+
+    // Track currently displayed venue per slot
+    const activeVenues = cards.map(c =>
+      c.querySelector('.card-location').textContent.split(' — ')[0].replace('📍 ', '')
+    );
+
     let slotIndex = 0;
 
-    // Track what each slot is showing so we don't repeat
-    const slotVenues = cards.map((_, i) => i);
+    function pickVenue(excludeNames) {
+      const available = venuePool.filter(v => !excludeNames.includes(v.name));
+      const venue = available[Math.floor(Math.random() * available.length)];
+      const entry = venue.entries[Math.floor(Math.random() * venue.entries.length)];
+      return { name: venue.name, ...entry };
+    }
 
     function updateNextCard() {
-      const card = cards[slotIndex];
+      const idx = slotIndex;
       slotIndex = (slotIndex + 1) % cards.length;
+      const card = cards[idx];
 
-      // Pick a venue not currently shown in this slot
-      let pick;
-      do { pick = venuePool[Math.floor(Math.random() * venuePool.length)]; }
-      while (pick.name === card.querySelector('.card-location').textContent.split(' — ')[0].replace('📍 ', ''));
+      // Exclude all currently shown venues except the one being replaced
+      const others = activeVenues.filter((_, i) => i !== idx);
+      const pick = pickVenue(others);
 
-      // Fade out
+      // Fade out + slight slide down
       card.style.opacity = '0';
+      card.style.transform = 'translateY(5px)';
 
       setTimeout(() => {
-        // Update content
-        card.querySelector('.card-location').textContent = `📍 ${pick.name} — ${nextTime()}`;
+        // Update text content
+        card.querySelector('.card-location').textContent = `📍 ${pick.name} — ${tickTime(idx)}`;
 
         const badge = card.querySelector('.energy-badge');
         badge.className = `energy-badge ${pick.energy}`;
@@ -575,23 +634,36 @@
 
         card.querySelector('.card-desc').textContent = pick.desc;
 
-        // Update card energy class
-        card.className = 'card' + (pick.energy !== 'low' ? ` energy-${pick.energy}` : '');
+        // Update card class — preserve card-top-pick on slot 0
+        const isTopPick = idx === 0;
+        card.className = 'card'
+          + (pick.energy !== 'low' ? ` energy-${pick.energy}` : '')
+          + (isTopPick ? ' card-top-pick' : '');
 
-        // Fade in
+        // Track active venue
+        activeVenues[idx] = pick.name;
+
+        // Fade + slide in
         card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
 
-        // Brief flash glow
+        // Brief glow flash
         card.classList.add('card-flash');
-        setTimeout(() => card.classList.remove('card-flash'), 700);
-      }, 300);
+        setTimeout(() => card.classList.remove('card-flash'), 800);
+      }, 320);
     }
 
-    // Stagger initial updates so cards don't all blink at once
-    setTimeout(() => {
-      updateNextCard();
-      setInterval(updateNextCard, 2800);
-    }, 2000);
+    // Schedule with randomised interval between 2–4 seconds
+    function scheduleNext() {
+      const delay = 2000 + Math.floor(Math.random() * 2000);
+      setTimeout(() => {
+        updateNextCard();
+        scheduleNext();
+      }, delay);
+    }
+
+    // First update after 1.8s so page feels settled
+    setTimeout(scheduleNext, 1800);
   </script>
 
   <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
