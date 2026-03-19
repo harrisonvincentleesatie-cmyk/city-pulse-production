@@ -187,6 +187,12 @@
       box-shadow: 0 0 20px rgba(212, 37, 90, 0.05) inset;
     }
 
+    .card.card-top-pick {
+      border-color: rgba(212, 37, 90, 0.5);
+      background: rgba(212, 37, 90, 0.08);
+      box-shadow: 0 0 28px rgba(212, 37, 90, 0.1) inset, 0 2px 16px rgba(212, 37, 90, 0.08);
+    }
+
     .card-flash {
       box-shadow: 0 0 22px rgba(212, 37, 90, 0.18) !important;
     }
@@ -255,8 +261,6 @@
       display: flex;
       flex-direction: column;
       gap: 11px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      padding-top: 4px;
     }
 
     form {
@@ -407,6 +411,9 @@
       .inner { gap: 44px; }
       h1 { font-size: 34px; }
     }
+
+    /* Extra top margin on form block for section separation */
+    .form-block { margin-top: 4px; }
   </style>
 </head>
 <body>
@@ -436,26 +443,26 @@
           </div>
         </div>
 
-        <div class="card energy-veryhigh">
+        <div class="card energy-veryhigh card-top-pick">
           <div class="card-top">
-            <span class="card-location">📍 Lush Saigon — 11:51 PM</span>
-            <span class="energy-badge veryhigh">Very High</span>
+            <span class="card-location">📍 Envy Club — 11:54 PM</span>
+            <span class="energy-badge veryhigh">🔥 Packed</span>
           </div>
           <span class="card-desc">Queue building — go now</span>
         </div>
 
         <div class="card energy-high">
           <div class="card-top">
-            <span class="card-location">📍 Broma Not A Bar — 11:42 PM</span>
-            <span class="energy-badge high">High</span>
+            <span class="card-location">📍 Broma Not A Bar — 11:47 PM</span>
+            <span class="energy-badge high">⚡ Busy</span>
           </div>
           <span class="card-desc">Rooftop filling fast</span>
         </div>
 
         <div class="card">
           <div class="card-top">
-            <span class="card-location">📍 The Observatory — 11:38 PM</span>
-            <span class="energy-badge low">Low</span>
+            <span class="card-location">📍 The Observatory — 11:39 PM</span>
+            <span class="energy-badge low">⬇️ Quiet</span>
           </div>
           <span class="card-desc">Quiet tonight — skip</span>
         </div>
@@ -475,7 +482,7 @@
             inputmode="email"
             required
           />
-          <button type="submit">Request access</button>
+          <button type="submit">Join early access</button>
         </form>
         <p class="spots-note">Limited spots for Saigon launch</p>
         <div class="confirmation" id="confirmation" role="status" aria-live="polite">
@@ -519,15 +526,15 @@
 
     // ── Live card rotation ───────────────────────────────────────────────────
     const venuePool = [
-      { name: 'Lush Saigon',       energy: 'veryhigh', label: 'Very High', desc: 'Queue building — go now' },
-      { name: 'Envy Club',          energy: 'veryhigh', label: 'Very High', desc: 'Dance floor packed' },
-      { name: 'Apocalypse Now',     energy: 'veryhigh', label: 'Very High', desc: "Peak hour — don't wait" },
-      { name: 'Broma Not A Bar',    energy: 'high',     label: 'High',      desc: 'Rooftop filling fast' },
-      { name: 'Chill Skybar',       energy: 'high',     label: 'High',      desc: 'Views + crowd building' },
-      { name: 'Pasteur Street',     energy: 'high',     label: 'High',      desc: 'Craft beer crowd growing' },
-      { name: 'Cargo Bar',          energy: 'moderate', label: 'Moderate',  desc: 'Steady vibe — worth it' },
-      { name: 'The Gin House',      energy: 'low',      label: 'Low',       desc: 'Slow night — pass' },
-      { name: 'The Observatory',    energy: 'low',      label: 'Low',       desc: 'Quiet tonight — skip' },
+      { name: 'Lush Saigon',       energy: 'veryhigh', label: '🔥 Packed',   desc: 'Queue building — go now' },
+      { name: 'Envy Club',          energy: 'veryhigh', label: '🔥 Packed',   desc: 'Dance floor packed' },
+      { name: 'Apocalypse Now',     energy: 'veryhigh', label: '🔥 Packed',   desc: "Peak hour — don't wait" },
+      { name: 'Broma Not A Bar',    energy: 'high',     label: '⚡ Busy',     desc: 'Rooftop filling fast' },
+      { name: 'Chill Skybar',       energy: 'high',     label: '⚡ Busy',     desc: 'Views + crowd building' },
+      { name: 'Pasteur Street',     energy: 'high',     label: '⚡ Busy',     desc: 'Craft beer crowd growing' },
+      { name: 'Cargo Bar',          energy: 'moderate', label: '👌 Good',     desc: 'Steady vibe — worth it' },
+      { name: 'The Gin House',      energy: 'low',      label: '⬇️ Quiet',   desc: 'Slow night — pass' },
+      { name: 'The Observatory',    energy: 'low',      label: '⬇️ Quiet',   desc: 'Quiet tonight — skip' },
     ];
 
     // Simulated clock starting around 11:30 PM
