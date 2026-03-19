@@ -72,6 +72,23 @@
       animation: breathe 11s ease-in-out infinite reverse;
     }
 
+    /* Core glow — static soft bloom at center, breathes slowly */
+    .core-glow {
+      position: absolute;
+      left: 50%;
+      top: 52%;
+      transform: translate(-50%, -50%);
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle at center,
+        rgba(212, 37, 90, 0.07) 0%,
+        transparent 70%
+      );
+      animation: breathe 6s ease-in-out infinite;
+    }
+
     /* Radar pulse rings — three rings, staggered */
     .pulse-ring {
       position: absolute;
@@ -81,13 +98,13 @@
       width: 600px;
       height: 600px;
       border-radius: 50%;
-      border: 1px solid rgba(212, 37, 90, 0.08);
+      border: 1px solid rgba(212, 37, 90, 0.1);
       opacity: 0;
       animation: expand 7s ease-out infinite;
     }
 
-    .pulse-ring:nth-child(2) { animation-delay: 2.33s; }
-    .pulse-ring:nth-child(3) { animation-delay: 4.66s; }
+    .pulse-ring:nth-child(3) { animation-delay: 2.33s; }
+    .pulse-ring:nth-child(4) { animation-delay: 4.66s; }
 
     @keyframes breathe {
       0%, 100% { opacity: 0.6;  transform: translate(-50%, -50%) scale(1); }
@@ -204,7 +221,7 @@
       font-size: 16px;
       font-family: inherit;
       outline: none;
-      transition: border-color 0.25s, background 0.25s;
+      transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
       -webkit-appearance: none;
     }
 
@@ -213,8 +230,9 @@
     }
 
     input[type="email"]:focus {
-      border-color: rgba(212, 37, 90, 0.38);
-      background: rgba(212, 37, 90, 0.03);
+      border-color: rgba(212, 37, 90, 0.5);
+      background: rgba(212, 37, 90, 0.04);
+      box-shadow: 0 0 0 3px rgba(212, 37, 90, 0.08), 0 0 20px rgba(212, 37, 90, 0.06);
     }
 
     button[type="submit"] {
@@ -229,24 +247,26 @@
       font-family: inherit;
       letter-spacing: 0.01em;
       cursor: pointer;
-      transition: opacity 0.2s, transform 0.15s;
+      transition: opacity 0.2s, transform 0.2s, box-shadow 0.3s;
       -webkit-appearance: none;
       animation: btn-breathe 5s ease-in-out infinite;
     }
 
     @keyframes btn-breathe {
-      0%, 100% { box-shadow: 0 4px 20px rgba(212, 37, 90, 0.18); }
-      50%       { box-shadow: 0 4px 32px rgba(212, 37, 90, 0.36); }
+      0%, 100% { box-shadow: 0 4px 22px rgba(212, 37, 90, 0.22); }
+      50%       { box-shadow: 0 6px 40px rgba(212, 37, 90, 0.46); }
     }
 
     button[type="submit"]:active {
-      opacity: 0.8;
-      transform: scale(0.98);
+      opacity: 0.85;
+      transform: scale(0.97) translateY(1px);
     }
 
     @media (hover: hover) {
       button[type="submit"]:hover {
-        opacity: 0.88;
+        opacity: 0.92;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 48px rgba(212, 37, 90, 0.52);
       }
     }
 
@@ -312,6 +332,17 @@
       letter-spacing: 0.01em;
     }
 
+    h1 .hl {
+      color: #ffffff;
+    }
+
+    .tagline {
+      font-size: 11px;
+      color: rgba(232, 228, 220, 0.2);
+      letter-spacing: 0.06em;
+      text-align: center;
+    }
+
     /* ── Desktop comfort ── */
     @media (min-width: 640px) {
       .inner { gap: 44px; }
@@ -324,6 +355,7 @@
 
   <!-- Ambient background — city radar atmosphere -->
   <div class="ambient" aria-hidden="true">
+    <div class="core-glow"></div>
     <div class="pulse-ring"></div>
     <div class="pulse-ring"></div>
     <div class="pulse-ring"></div>
@@ -341,7 +373,7 @@
       <!-- Hero -->
       <div class="hero">
         <p class="eyebrow">Launching soon in Saigon</p>
-        <h1>Never walk into a dead night again.</h1>
+        <h1>Never walk into a <span class="hl">dead night</span> again.</h1>
         <p class="fomo">🔥 Early access opening soon in Saigon</p>
         <p class="sub">City Pulse shows where bars, clubbing, food, coffee, and live city energy are building in real time.</p>
       </div>
@@ -367,6 +399,7 @@
           <span class="confirmation-sub">We'll reach out when City Pulse goes live in Saigon.</span>
         </div>
         <p class="form-note">Early access · Launch updates only · No spam</p>
+        <p class="tagline">⚡ Real-time nightlife intelligence</p>
       </div>
 
       <!-- Footer -->
