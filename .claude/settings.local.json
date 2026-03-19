@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc:*)",
+      "Bash(npm run:*)",
+      "Bash(ls -la /Users/harrisatie/city-pulse-mvp/*.json /Users/harrisatie/city-pulse-mvp/*.ts)"
+    ]
+  }
+}

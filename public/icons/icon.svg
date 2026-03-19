@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Background -->
+  <rect width="512" height="512" rx="112" fill="#080a0f"/>
+
+  <!-- Subtle city grid lines -->
+  <g stroke="rgba(255,255,255,0.06)" stroke-width="1" fill="none">
+    <line x1="128" y1="0" x2="128" y2="512"/>
+    <line x1="256" y1="0" x2="256" y2="512"/>
+    <line x1="384" y1="0" x2="384" y2="512"/>
+    <line x1="0" y1="128" x2="512" y2="128"/>
+    <line x1="0" y1="256" x2="512" y2="256"/>
+    <line x1="0" y1="384" x2="512" y2="384"/>
+  </g>
+
+  <!-- Outer pulse ring -->
+  <circle cx="256" cy="256" r="140" stroke="rgba(255,45,120,0.18)" stroke-width="1.5" fill="none"/>
+
+  <!-- Mid pulse ring -->
+  <circle cx="256" cy="256" r="96" stroke="rgba(255,45,120,0.30)" stroke-width="1.5" fill="none"/>
+
+  <!-- Inner glow ring -->
+  <circle cx="256" cy="256" r="56" stroke="rgba(255,45,120,0.50)" stroke-width="2" fill="rgba(255,45,120,0.06)"/>
+
+  <!-- Centre dot -->
+  <circle cx="256" cy="256" r="22" fill="#ff2d78" filter="url(#glow)"/>
+
+  <!-- Glow filter -->
+  <defs>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+</svg>
