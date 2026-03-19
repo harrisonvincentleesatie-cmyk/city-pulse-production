@@ -51,7 +51,7 @@
       max-width: 400px;
       display: flex;
       flex-direction: column;
-      gap: 32px;
+      gap: 36px;
     }
 
     /* ── Brand ── */
@@ -88,7 +88,7 @@
     .hero {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
 
     .eyebrow {
@@ -136,27 +136,17 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 2px;
+      margin-bottom: 4px;
     }
 
     .live-indicator {
       display: flex;
       align-items: center;
-      gap: 6px;
-    }
-
-    .live-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #d4255a;
-      box-shadow: 0 0 6px rgba(212, 37, 90, 0.7);
-      animation: live-blink 2s ease-in-out infinite;
     }
 
     @keyframes live-blink {
       0%, 100% { opacity: 1; }
-      50%       { opacity: 0.35; }
+      50%       { opacity: 0.4; }
     }
 
     .live-label {
@@ -165,6 +155,7 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: #d4255a;
+      animation: live-blink 2.5s ease-in-out infinite;
     }
 
     .live-subtitle {
@@ -264,6 +255,8 @@
       display: flex;
       flex-direction: column;
       gap: 11px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 4px;
     }
 
     form {
@@ -357,7 +350,7 @@
       font-size: 11px;
       color: rgba(232, 228, 220, 0.35);
       letter-spacing: 0.03em;
-      text-align: right;
+      text-align: center;
     }
 
     .cta-nudge {
@@ -411,7 +404,7 @@
 
     /* ── Desktop ── */
     @media (min-width: 640px) {
-      .inner { gap: 36px; }
+      .inner { gap: 44px; }
       h1 { font-size: 34px; }
     }
   </style>
@@ -439,7 +432,6 @@
       <div class="live-section" aria-label="Live city activity preview">
         <div class="live-header">
           <div class="live-indicator">
-            <div class="live-dot"></div>
             <span class="live-label">● Live Data (Preview)</span>
           </div>
         </div>
