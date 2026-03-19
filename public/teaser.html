@@ -34,8 +34,26 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
+    /* Subtle animated ambient layer */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(ellipse 65% 45% at 50% 58%, rgba(212, 37, 90, 0.055) 0%, transparent 68%);
+      animation: bg-breathe 14s ease-in-out infinite;
+    }
+
+    @keyframes bg-breathe {
+      0%, 100% { opacity: 0.55; transform: scale(1); }
+      50%       { opacity: 1;    transform: scale(1.12); }
+    }
+
     /* ── Layout ── */
     .page-wrapper {
+      position: relative;
+      z-index: 1;
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
@@ -188,13 +206,28 @@
     }
 
     .card.card-top-pick {
-      border-color: rgba(212, 37, 90, 0.5);
-      background: rgba(212, 37, 90, 0.08);
-      box-shadow: 0 0 28px rgba(212, 37, 90, 0.1) inset, 0 2px 16px rgba(212, 37, 90, 0.08);
+      padding: 17px 17px;
+      border-color: rgba(212, 37, 90, 0.55);
+      background: rgba(212, 37, 90, 0.09);
+      box-shadow: 0 0 32px rgba(212, 37, 90, 0.13) inset, 0 4px 22px rgba(212, 37, 90, 0.1);
     }
 
     .card-flash {
-      box-shadow: 0 0 22px rgba(212, 37, 90, 0.18) !important;
+      box-shadow: 0 0 28px rgba(212, 37, 90, 0.22) !important;
+    }
+
+    @media (hover: hover) {
+      .card:hover {
+        transform: scale(1.015);
+        box-shadow: 0 4px 20px rgba(212, 37, 90, 0.1);
+      }
+      .card.card-top-pick:hover {
+        box-shadow: 0 0 36px rgba(212, 37, 90, 0.16) inset, 0 6px 28px rgba(212, 37, 90, 0.15);
+      }
+    }
+
+    .card:active {
+      transform: scale(0.985);
     }
 
     .card-top {
@@ -424,7 +457,7 @@
       <!-- Brand -->
       <div class="brand">
         <div class="brand-dot"></div>
-        <span class="brand-name">City Pulse</span>
+        <span class="brand-name">Live — Saigon</span>
       </div>
 
       <!-- Hero -->
@@ -439,7 +472,7 @@
       <div class="live-section" aria-label="Live city activity preview">
         <div class="live-header">
           <div class="live-indicator">
-            <span class="live-label">● Live Data (Preview)</span>
+            <span class="live-label">● Trending Right Now</span>
           </div>
         </div>
 
@@ -482,7 +515,7 @@
             inputmode="email"
             required
           />
-          <button type="submit">Join early access</button>
+          <button type="submit">Get early access</button>
         </form>
         <p class="spots-note">Limited spots for Saigon launch</p>
         <div class="confirmation" id="confirmation" role="status" aria-live="polite">
@@ -529,50 +562,53 @@
       {
         name: 'Bam',
         entries: [
-          { energy: 'veryhigh', label: '🔥 Packed',  desc: 'Packed inside — queue forming' },
-          { energy: 'high',     label: '⚡ Busy',    desc: 'Filling up fast' },
+          { energy: 'veryhigh', label: '🔥 Packed',  desc: 'Queue outside. DJ set just started.' },
+          { energy: 'veryhigh', label: '🔥 Packed',  desc: 'Packed. Drinks flowing.' },
+          { energy: 'high',     label: '⚡ Busy',    desc: 'Crowd building quickly.' },
         ]
       },
       {
         name: 'Lost - Drink & Chill',
         entries: [
-          { energy: 'high',     label: '⚡ Busy',    desc: '~30+ people — getting busy' },
-          { energy: 'moderate', label: '👌 Good',    desc: 'Steady crowd, good vibe' },
+          { energy: 'high',     label: '⚡ Busy',    desc: 'Getting busy. Good energy inside.' },
+          { energy: 'moderate', label: '👌 Good',    desc: 'Steady crowd. Relaxed vibe.' },
         ]
       },
       {
         name: 'Loop 1 - Cocktail & Kitchen',
         entries: [
-          { energy: 'high',     label: '⚡ Busy',    desc: 'Most tables taken' },
-          { energy: 'moderate', label: '👌 Good',    desc: 'Half full — walk-in friendly' },
+          { energy: 'high',     label: '⚡ Busy',    desc: 'Most seats taken. Drinks flowing.' },
+          { energy: 'moderate', label: '👌 Good',    desc: 'Half full. Walk-ins welcome.' },
         ]
       },
       {
         name: 'Bodega Saigon',
         entries: [
-          { energy: 'veryhigh', label: '🔥 Packed',  desc: 'Queue building — go now' },
-          { energy: 'high',     label: '⚡ Busy',    desc: 'Crowd building fast' },
+          { energy: 'veryhigh', label: '🔥 Packed',  desc: 'Queue building. Go now.' },
+          { energy: 'veryhigh', label: '🔥 Packed',  desc: 'Packed inside. Energy is high.' },
+          { energy: 'high',     label: '⚡ Busy',    desc: 'Filling up fast.' },
         ]
       },
       {
         name: 'Lush Saigon',
         entries: [
-          { energy: 'veryhigh', label: '🔥 Packed',  desc: 'Packed — skip the wait or go now' },
-          { energy: 'high',     label: '⚡ Busy',    desc: 'Dance floor warming up' },
+          { energy: 'veryhigh', label: '🔥 Packed',  desc: 'Packed. Go now or skip the wait.' },
+          { energy: 'veryhigh', label: '🔥 Packed',  desc: 'Floor packed. Live set running.' },
+          { energy: 'high',     label: '⚡ Busy',    desc: 'Dance floor warming up fast.' },
         ]
       },
       {
         name: 'Broma Not A Bar',
         entries: [
-          { energy: 'high',     label: '⚡ Busy',    desc: 'Rooftop filling up' },
-          { energy: 'moderate', label: '👌 Good',    desc: 'Relaxed crowd, good energy' },
+          { energy: 'high',     label: '⚡ Busy',    desc: 'Rooftop filling up. Good crowd.' },
+          { energy: 'moderate', label: '👌 Good',    desc: 'Relaxed rooftop crowd. Worth it.' },
         ]
       },
       {
         name: 'The Observatory',
         entries: [
-          { energy: 'low',      label: '⬇️ Quiet',  desc: 'Quiet tonight — worth skipping' },
-          { energy: 'moderate', label: '👌 Good',    desc: 'Slow start, starting to pick up' },
+          { energy: 'low',      label: '⬇️ Quiet',  desc: 'Quiet tonight. Worth skipping.' },
+          { energy: 'moderate', label: '👌 Good',    desc: 'Slow start. Picking up now.' },
         ]
       },
     ];
