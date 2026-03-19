@@ -369,10 +369,10 @@
       if (!email || !email.includes('@')) return;
 
       try {
-        await fetch("https://subscribe-forms.beehiiv.com/12f31451-3ac2-4d22-909b-ff74edaee332", {
+        await fetch("/api/subscribe", {
           method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: new URLSearchParams({ email: email }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
         });
       } catch (_) {
         // Silently continue — show success regardless of network errors
